@@ -1,0 +1,11 @@
+{
+  "name": "bitex",
+  "version": "1.0.0",
+  "description": "Food Ordering Web App",
+  "main": "App.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Rishabh Srivastava",
+  "license": "ISC"
+}
