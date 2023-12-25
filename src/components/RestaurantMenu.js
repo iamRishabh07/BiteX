@@ -1,34 +1,27 @@
-import { useState, useEffect } from 'react';
 import Shimmer from './Shimer';
 import { useParams } from 'react-router-dom';
-import { MENU_API } from '../utils/constants';
+import useRestaurantMenu from '../utils/useRestaurantMenu';
 
 const RestaurantMenu = () => {
-  const [resInfo, setRestInfo] = useState(null);
-
   const { resId } = useParams();
-
-  useEffect(() => {
-    fetchMenu();
-  }, []);
-
-  const fetchMenu = async () => {
-    const data = await fetch(MENU_API + resId);
-    // const data = await fetch(
-    //   'https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.9351929&lng=77.62448069999999&restaurantId=18973'
-    // );
-
-    const json = await data.json();
-    setRestInfo(json.data);
-  };
+  const resInfo = useRestaurantMenu(resId);
 
   if (resInfo === null) return <Shimmer />;
 
-  const { name, cuisines, costForTwoMessage } =
-    resInfo?.cards[0]?.card?.card?.info;
+  // const { name, cuisines, costForTwoMessage } =
+  //   resInfo?.cards[0]?.card?.card?.info;
 
-  const { itemCards } =
+  // const { itemCards } =
+  //   resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card;
+  // console.log(typeof itemCards);
+  const cardInfo = resInfo?.cards[0]?.card?.card;
+  const name = cardInfo?.info?.name;
+  const cuisines = cardInfo?.info?.cuisines;
+  const costForTwoMessage = cardInfo?.info?.costForTwoMessage;
+
+  const itemCardsInfo =
     resInfo?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card;
+  const itemCards = itemCardsInfo?.itemCards || [];
 
   return (
     <div className="res-menu">
